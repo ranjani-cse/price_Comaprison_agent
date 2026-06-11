@@ -1,0 +1,28 @@
+# Add at the end of three_mobiles_india.py
+
+def save_results_json(results, winner):
+    """Save results to JSON file"""
+    data = {
+        "comparison": {
+            "timestamp": datetime.now().isoformat(),
+            "products_compared": len(results),
+            "website": "Flipkart",
+            "currency": "INR",
+            "results": [
+                {"rank": i+1, "product": name, "price": price, "price_formatted": f"₹{price:,}"}
+                for i, (name, price) in enumerate(sorted(results, key=lambda x: x[1]))
+            ],
+            "winner": {
+                "product": winner[0],
+                "price": winner[1],
+                "price_formatted": f"₹{winner[1]:,}",
+                "reason": "Lowest price among all mobiles"
+            }
+        }
+    }
+    with open("comparison_results.json", "w") as f:
+        json.dump(data, f, indent=2)
+    print("📁 Saved: comparison_results.json")
+
+# Call this after getting results
+save_results_json(results, best)
